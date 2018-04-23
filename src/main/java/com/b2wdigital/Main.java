@@ -1,7 +1,6 @@
 package com.b2wdigital;
 
-import com.b2wdigital.handler.TransactionHandler;
-import io.undertow.Handlers;
+import com.b2wdigital.handler.TransactionPostHandler;
 import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.RoutingHandler;
@@ -10,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        HttpHandler rootHandler = new TransactionHandler();
+        HttpHandler rootHandler = new TransactionPostHandler();
 
         // Just a handler to abstract  others handlers bindings
         RoutingHandler rh = RootRouter.getRoutes(); // Handlers.routing().get("", rootHandler);
