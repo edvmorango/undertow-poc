@@ -1,5 +1,6 @@
 package com.b2wdigital.handler;
 
+import com.b2wdigital.model.Transaction;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -34,11 +35,12 @@ public class TransactionPostHandler implements HttpHandler {
 
         JsonNode jsonNode = or.readTree(new ByteArrayInputStream(bts));
 
-        jsonNode.fieldNames().forEachRemaining(System.out::println);
+        Transaction transaction = om.convertValue(jsonNode, Transaction.class);
+        System.out.println(transaction);
 
         exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json");
         exchange.getResponseSender().send(ByteBuffer.wrap(ow.writeValueAsBytes(jsonNode)));
-//        exchange.getResponseSender().send(jsonNode.asText());
+
     }
 
 
