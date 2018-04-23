@@ -1,23 +1,16 @@
 package com.b2wdigital;
 
+import com.b2wdigital.handler.TransactionHandler;
 import io.undertow.Handlers;
 import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
-import io.undertow.server.HttpServerExchange;
 import io.undertow.server.RoutingHandler;
 
 public class Main {
 
-
     public static void main(String[] args) {
 
-        HttpHandler rootHandler = new HttpHandler() {
-            @Override
-            public void handleRequest(HttpServerExchange exchange) throws Exception {
-
-                exchange.getResponseSender().send("This is it");
-            }
-        };
+        HttpHandler rootHandler = new TransactionHandler();
 
 
         // Just a handler to abstract  others handlers bindings
@@ -31,6 +24,5 @@ public class Main {
         server.start();
 
     }
-
 
 }
