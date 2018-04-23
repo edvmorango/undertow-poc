@@ -12,10 +12,8 @@ public class Main {
 
         HttpHandler rootHandler = new TransactionHandler();
 
-
         // Just a handler to abstract  others handlers bindings
-        RoutingHandler rh = Handlers.routing().get("", rootHandler);
-
+        RoutingHandler rh = RootRouter.getRoutes(); // Handlers.routing().get("", rootHandler);
 
         Undertow server = Undertow.builder()
                 .addHttpListener(8080, "localhost")
