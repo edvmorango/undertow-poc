@@ -1,5 +1,7 @@
 package com.b2wdigital.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -12,6 +14,7 @@ public class Transaction {
     public UUID getId() {
         return id;
     }
+
 
     public void setId(UUID id) {
         this.id = id;
