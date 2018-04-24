@@ -47,16 +47,11 @@ public final class TransactionHandlers {
             byte[] bts = buffer.array();
 
             ObjectMapper om = new ObjectMapper();
-            ObjectReader or = om.reader();
-            ObjectWriter ow = om.writer();
-
-            JsonNode jsonNode = or.readTree(new ByteArrayInputStream(bts));
-
-            Transaction transaction = om.convertValue(jsonNode, Transaction.class);
-            System.out.println(transaction);
+            
+            Transaction transaction = om.readValue(bts, Transaction.class);
 
             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json");
-            exchange.getResponseSender().send(ByteBuffer.wrap(ow.writeValueAsBytes(jsonNode)));
+            exchange.getResponseSender().send(ByteBuffer.wrap(om.writeValueAsBytes(transaction)));
 
         };
 
