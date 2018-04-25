@@ -1,4 +1,4 @@
-package com.b2wdigital.handler;
+package com.handler;
 
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;

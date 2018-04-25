@@ -1,6 +1,6 @@
-package com.b2wdigital;
+package com;
 
-import com.b2wdigital.handler.TransactionPostHandler;
+import com.handler.TransactionPostHandler;
 import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.RoutingHandler;

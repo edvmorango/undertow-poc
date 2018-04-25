@@ -1,16 +1,12 @@
-package com.b2wdigital.handler;
+package com.handler;
 
-import com.b2wdigital.model.Transaction;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.model.Transaction;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 import io.undertow.util.PathTemplateMatch;
 
-import java.io.ByteArrayInputStream;
 import java.nio.ByteBuffer;
 import java.util.Deque;
 import java.util.Map;
@@ -47,7 +43,7 @@ public final class TransactionHandlers {
             byte[] bts = buffer.array();
 
             ObjectMapper om = new ObjectMapper();
-            
+
             Transaction transaction = om.readValue(bts, Transaction.class);
 
             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json");

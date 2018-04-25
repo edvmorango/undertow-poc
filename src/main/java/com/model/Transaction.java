@@ -1,4 +1,4 @@
-package com.b2wdigital.model;
+package com.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 

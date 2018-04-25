@@ -1,9 +1,6 @@
-package com.b2wdigital;
+package com;
 
-import com.b2wdigital.handler.TransactionGetHandler;
-import com.b2wdigital.handler.TransactionHandlers;
-import com.b2wdigital.handler.TransactionPostHandler;
-import com.b2wdigital.handler.TransactionQueryHandler;
+import com.handler.TransactionHandlers;
 import io.undertow.server.RoutingHandler;
 
 public final class RootRouter {
