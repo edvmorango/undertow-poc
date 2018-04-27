@@ -1,31 +1,28 @@
 package com.model;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Transaction {
 
-    private UUID id;
+    private UUID uid;
     private String clientName;
     private BigDecimal value;
     private LocalDateTime createdAt;
 
-    public Transaction(UUID id, String clientName, BigDecimal value) {
-        this.id = id;
+    public Transaction(UUID uid, String clientName, BigDecimal value) {
+        this.uid = uid;
         this.clientName = clientName;
         this.value = value;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getUid() {
+        return uid;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setUid(UUID uid) {
+        this.uid = uid;
     }
 
     public String getClientName() {
@@ -44,5 +41,18 @@ public class Transaction {
         this.value = value;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Transaction(UUID uid, String clientName, BigDecimal value, LocalDateTime createdAt) {
+        this.uid = uid;
+        this.clientName = clientName;
+        this.value = value;
+        this.createdAt = createdAt;
+    }
 }

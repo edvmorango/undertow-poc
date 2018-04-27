@@ -1,24 +1,13 @@
-package com.persistence;
+package com.persistence.dynamo;
 
-import com.amazonaws.ClientConfiguration;
-import com.amazonaws.ClientConfigurationFactory;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.Regions;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsync;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsyncClientBuilder;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.amazonaws.services.dynamodbv2.document.Attribute;
 import com.amazonaws.services.dynamodbv2.model.*;
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.AttributeType;
-import org.w3c.dom.Attr;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 import static com.amazonaws.client.builder.AwsClientBuilder.*;
 
@@ -41,16 +30,12 @@ public class DynamoConnector {
 
     public void connect() {
 
-
-
-
         BasicAWSCredentials credential = new BasicAWSCredentials("accessKey", "secretKey");
 
         AWSStaticCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(credential);
 
         EndpointConfiguration endpointConf = new EndpointConfiguration("http://localhost:8000",
                 Regions.US_EAST_1.toString());
-
 
         AmazonDynamoDBAsync client = AmazonDynamoDBAsyncClientBuilder.standard().withCredentials(credentialsProvider)
                 .withEndpointConfiguration(endpointConf)
