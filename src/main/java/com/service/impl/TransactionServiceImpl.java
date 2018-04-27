@@ -13,7 +13,10 @@ public class TransactionServiceImpl implements TransactionService {
 
 
     @Inject
-    TransactionRepositoryDynamoDBImpl rep;
+    private TransactionRepositoryDynamoDBImpl rep;
+
+
+
 
     @Override
     public Transaction create(Transaction obj) {

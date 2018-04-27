@@ -6,17 +6,34 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsync;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsyncClientBuilder;
 import com.amazonaws.services.dynamodbv2.model.*;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Stage;
+import com.google.inject.util.Modules;
+import com.inject.ApplicationModule;
+import com.model.Transaction;
+import com.service.impl.TransactionServiceImpl;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static com.amazonaws.client.builder.AwsClientBuilder.*;
 
 public class DynamoConnector {
 
+
+
     public static void main(String[] args) {
 
+        Injector injector = Guice.createInjector(new ApplicationModule());
+
         try {
-            new DynamoConnector().connect();
+            TransactionServiceImpl service = new TransactionServiceImpl();
+
+            Transaction tra = new Transaction(UUID.randomUUID(), "Eduardo", new BigDecimal(100), LocalDateTime.now());
+            service.create(tra);
 
             Thread.sleep(5000);
             System.out.println("Finished" );
