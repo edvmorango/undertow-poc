@@ -4,11 +4,10 @@ import java.util.List;
 
 public interface GenericRepository<T> {
 
-    public T create(T obj);
+    T create(T obj);
 
-    public T find(String uid);
+    T findById(String uid);
 
-    public List<T> list();
-
+    List<T> list();
 
 }

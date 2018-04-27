@@ -63,8 +63,11 @@ public class DynamoConnector {
 
         client.createTable(createTableRequest);
 
-
     }
+
+
+
+
 
 
 }

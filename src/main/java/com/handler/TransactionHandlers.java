@@ -36,6 +36,7 @@ public final class TransactionHandlers {
                 return;
             }
 
+            // thread pool java
             ByteBuffer buffer = ByteBuffer.allocate(2048);
 
             exchange.getRequestChannel().read(buffer);
