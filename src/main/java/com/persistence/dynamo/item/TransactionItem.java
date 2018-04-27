@@ -17,9 +17,6 @@ public class TransactionItem {
     @DynamoDBHashKey(attributeName = "id")
     private String uid;
 
-    @DynamoDBRangeKey(attributeName = "createdAt")
-    private Date createdAt;
-
     @DynamoDBAttribute(attributeName = "clientName")
     private String clientName;
 
@@ -27,18 +24,15 @@ public class TransactionItem {
     private BigDecimal value;
 
 
-    public TransactionItem(String uid, Date createdAt, String clientName, BigDecimal value) {
+    @DynamoDBRangeKey(attributeName = "createdAt")
+    private Date createdAt;
+
+
+    public TransactionItem(String uid, String clientName, BigDecimal value, Date createdAt) {
         this.uid = uid;
-        this.createdAt = createdAt;
         this.clientName = clientName;
         this.value = value;
-    }
-
-    public TransactionItem(Transaction transaction) {
-        this.uid = transaction.getUid().toString();
-        this.createdAt = DateFormatter.localDateTimeToDate(transaction.getCreatedAt());
-        this.clientName = transaction.getClientName();
-        this.value = transaction.getValue();
+        this.createdAt = createdAt;
     }
 
     public String getUid() {
