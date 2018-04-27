@@ -13,7 +13,9 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.Attribute;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.AttributeType;
+import org.w3c.dom.Attr;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,12 +27,11 @@ public class DynamoConnector {
 
     public static void main(String[] args) {
 
-
         try {
             new DynamoConnector().connect();
 
             Thread.sleep(5000);
-
+            System.out.println("Finished" );
         } catch (Exception e) {
             System.out.println(
                     e.getLocalizedMessage());
@@ -39,6 +40,8 @@ public class DynamoConnector {
     }
 
     public void connect() {
+
+
 
 
         BasicAWSCredentials credential = new BasicAWSCredentials("accessKey", "secretKey");
@@ -54,21 +57,26 @@ public class DynamoConnector {
                 .build();
 
 
-        KeySchemaElement keySchema = new KeySchemaElement("identifier", KeyType.HASH);
-        KeySchemaElement sort = new KeySchemaElement("sort", KeyType.RANGE);
+        client.deleteTableAsync("name");
+
+        try{
+            Thread.sleep(1000);
+
+        }catch (Exception e){
+
+
+        }
+
 
         ArrayList<KeySchemaElement> keySchemaElements = new ArrayList<>();
+        KeySchemaElement identifier = new KeySchemaElement("tbid", KeyType.HASH);
+        keySchemaElements.add(identifier);
 
-        keySchemaElements.add(keySchema);
-
-        AttributeDefinition attributen = new AttributeDefinition("asstss", ScalarAttributeType.N);
-        AttributeDefinition attribute = new AttributeDefinition("atttt", ScalarAttributeType.S);
-        ArrayList<AttributeDefinition> attDef = new ArrayList<>();
-        attDef.add(attributen);
-        attDef.add(attribute);
-
+        ArrayList<AttributeDefinition> attributes = new ArrayList<>();
+        attributes.add(new AttributeDefinition().withAttributeName("tbid").withAttributeType("S" ));
         ProvisionedThroughput tp = new ProvisionedThroughput(10L, 10L);
-        CreateTableRequest createTableRequest = new CreateTableRequest(attDef, "name", keySchemaElements, tp);
+
+        CreateTableRequest createTableRequest = new CreateTableRequest(attributes, "name", keySchemaElements, tp);
 
         client.createTable(createTableRequest);
 
