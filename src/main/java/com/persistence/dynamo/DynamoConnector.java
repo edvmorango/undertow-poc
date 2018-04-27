@@ -13,7 +13,6 @@ import static com.amazonaws.client.builder.AwsClientBuilder.*;
 
 public class DynamoConnector {
 
-
     public static void main(String[] args) {
 
         try {
@@ -51,7 +50,6 @@ public class DynamoConnector {
 
 
         }
-
 
         ArrayList<KeySchemaElement> keySchemaElements = new ArrayList<>();
         KeySchemaElement identifier = new KeySchemaElement("tbid", KeyType.HASH);

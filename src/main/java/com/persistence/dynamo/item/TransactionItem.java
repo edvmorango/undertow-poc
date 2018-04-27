@@ -1,4 +1,4 @@
-package com.persistence.model.items;
+package com.persistence.dynamo.item;
 
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
