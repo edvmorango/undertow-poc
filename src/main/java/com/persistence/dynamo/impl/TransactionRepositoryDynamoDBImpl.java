@@ -1,5 +1,9 @@
 package com.persistence.dynamo.impl;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTableMapper;
+import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
+import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.google.inject.Inject;
 import com.model.Transaction;
 import com.persistence.dynamo.DynamoDBClient;
@@ -10,17 +14,19 @@ import com.utils.DateFormatter;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
 public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<Transaction, TransactionItem> {
 
-    @Inject private DynamoDBClient client;
+    @Inject
+    private DynamoDBClient client;
 
     @Override
     public Transaction persistenceToObject(TransactionItem entity) {
 
-        UUID uuid = UUID.fromString(entity.getClientName());
+        UUID uuid = UUID.fromString(entity.getUid());
         LocalDateTime createdAt = DateFormatter.dateToLocalDateTime(entity.getCreatedAt());
 
         return new Transaction(uuid, entity.getClientName(), entity.getValue(), createdAt);
@@ -41,9 +47,7 @@ public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<
     public TransactionItem create(TransactionItem obj) {
 
 
-        System.out.println(obj.getUid());
         client.getMapper().save(obj);
-
         try{
             Thread.sleep(1000);
         } catch (Exception e){

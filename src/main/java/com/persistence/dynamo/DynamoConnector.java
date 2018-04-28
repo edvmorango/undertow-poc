@@ -12,6 +12,7 @@ import com.google.inject.Stage;
 import com.google.inject.util.Modules;
 import com.inject.ApplicationModule;
 import com.model.Transaction;
+import com.service.TransactionService;
 import com.service.impl.TransactionServiceImpl;
 
 import java.math.BigDecimal;
@@ -30,11 +31,10 @@ public class DynamoConnector {
         Injector injector = Guice.createInjector(new ApplicationModule());
 
         try {
-            TransactionServiceImpl service = new TransactionServiceImpl();
+            TransactionService service = injector.getInstance(TransactionServiceImpl.class);
 
             Transaction tra = new Transaction(UUID.randomUUID(), "Eduardo", new BigDecimal(100), LocalDateTime.now());
             service.create(tra);
-
             Thread.sleep(5000);
             System.out.println("Finished" );
         } catch (Exception e) {

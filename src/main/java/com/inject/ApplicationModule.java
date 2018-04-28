@@ -2,8 +2,10 @@ package com.inject;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
+import com.google.inject.name.Names;
 import com.model.Transaction;
 import com.persistence.dynamo.DynamoConnector;
+import com.persistence.dynamo.DynamoDBClient;
 import com.persistence.dynamo.impl.TransactionRepositoryDynamoDBImpl;
 import com.persistence.repository.TransactionRepository;
 import com.service.impl.TransactionServiceImpl;
@@ -21,8 +23,9 @@ public class ApplicationModule extends AbstractModule {
             install(m);
         }
 
-        bind(DynamoConnector.class).asEagerSingleton();
-        bind(TransactionRepository.class).to(TransactionRepositoryDynamoDBImpl.class).asEagerSingleton();
+        bind(DynamoDBClient.class).asEagerSingleton();
+        bind(TransactionRepository.class).annotatedWith(Names.named("TransactionRepositoryDynamo")).to(TransactionRepositoryDynamoDBImpl.class);
+
 //        bind(TransactionService.class).to(TransactionServiceImpl.class);
 
     }

@@ -7,7 +7,9 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsync;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsyncClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.google.inject.Singleton;
+import com.persistence.dynamo.item.TransactionItem;
 
 @Singleton
 public class DynamoDBClient {
@@ -30,7 +32,18 @@ public class DynamoDBClient {
 
         this.client = client;
         this.mapper = new DynamoDBMapper(client);
+
+        createTables();
     }
+
+    private void createTables(){
+
+        ProvisionedThroughput throughput = new ProvisionedThroughput(10L, 10L);
+
+        mapper.newTableMapper(TransactionItem.class).createTableIfNotExists(throughput);
+
+    }
+
 
     public DynamoDBMapper getMapper() {
         return mapper;

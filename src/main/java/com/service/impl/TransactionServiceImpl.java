@@ -11,7 +11,6 @@ import java.util.Optional;
 
 public class TransactionServiceImpl implements TransactionService {
 
-
     @Inject
     private TransactionRepositoryDynamoDBImpl rep;
 

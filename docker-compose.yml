@@ -6,6 +6,6 @@ services:
     image: cnadiminti/dynamodb-local
     restart: always
     volumes:
-      - /db:/dynamodb_local_db
+      - ./db:/dynamodb_local_db
     ports:
       - 8000:8000
