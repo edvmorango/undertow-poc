@@ -31,9 +31,16 @@ public class DynamoConnector {
 
         TransactionService service = injector.getInstance(TransactionServiceImpl.class);
 
-        Transaction tra = new Transaction(null, "Eduardo", new BigDecimal(100), LocalDateTime.now());
+        Transaction tra = new Transaction(null, "Eduardo Morango", new BigDecimal(100), LocalDateTime.now());
 
-        service.create(tra);
+        Transaction inserted = service.create(tra);
+
+        System.out.println("Inserted: "+inserted.getClientName());
+        System.out.println("Found: "+service.findById(inserted.getUid().toString()));
+
+        for (Transaction t : service.list())
+            System.out.println("List: "+t.getCreatedAt());
+
 
         System.out.println("Finished");
 

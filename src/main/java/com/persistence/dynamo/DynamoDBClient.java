@@ -7,6 +7,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsync;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsyncClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.google.inject.Singleton;
 import com.persistence.dynamo.item.TransactionItem;
@@ -16,6 +17,7 @@ public class DynamoDBClient {
 
     private final AmazonDynamoDBAsync client;
     private final DynamoDBMapper mapper;
+    private final DynamoDBMapperConfig config;
 
     public DynamoDBClient() {
 
@@ -32,8 +34,10 @@ public class DynamoDBClient {
 
         this.client = client;
         this.mapper = new DynamoDBMapper(client);
+        this.config = DynamoDBMapperConfig.DEFAULT;
 
         createTables();
+
     }
 
     private void createTables(){
@@ -51,5 +55,9 @@ public class DynamoDBClient {
 
     public AmazonDynamoDBAsync getClient() {
         return client;
+    }
+
+    public DynamoDBMapperConfig getConfig() {
+        return config;
     }
 }

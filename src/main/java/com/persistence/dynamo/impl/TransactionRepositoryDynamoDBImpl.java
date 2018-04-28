@@ -1,9 +1,8 @@
 package com.persistence.dynamo.impl;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTableMapper;
-import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
-import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
+
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
 import com.google.inject.Inject;
 import com.model.Transaction;
 import com.persistence.dynamo.DynamoDBClient;
@@ -14,8 +13,8 @@ import com.utils.DateFormatter;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<Transaction, TransactionItem> {
@@ -45,7 +44,6 @@ public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<
         return new TransactionItem(uid, obj.getClientName(), obj.getValue(), createdAt);
     }
 
-
     @Override
     public TransactionItem create(TransactionItem obj) {
 
@@ -58,11 +56,18 @@ public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<
 
     @Override
     public TransactionItem findById(String uid) {
-        return null;
+
+      return  client.getMapper().load(TransactionItem.class, uid);
+
     }
 
     @Override
     public List<TransactionItem> list() {
-        return null;
+        DynamoDBScanExpression exp = new DynamoDBScanExpression();
+
+        PaginatedScanList<TransactionItem> resultSet = client.getMapper().scan(TransactionItem.class, exp, client.getConfig());
+
+        return resultSet.stream().collect(Collectors.toList());
+
     }
 }

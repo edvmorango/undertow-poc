@@ -8,14 +8,12 @@ import com.service.TransactionService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class TransactionServiceImpl implements TransactionService {
 
     @Inject
     private TransactionRepositoryDynamoDBImpl rep;
-
-
-
 
     @Override
     public Transaction create(Transaction obj) {
@@ -26,11 +24,13 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Transaction findById(String uid) {
-        return null;
+        return Optional.of(rep.findById(uid)).map(rep::persistenceToObject).get();
     }
 
     @Override
     public List<Transaction> list() {
-        return null;
+
+        return rep.list().stream().map(rep::persistenceToObject).collect(Collectors.toList());
+
     }
 }
