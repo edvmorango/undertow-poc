@@ -25,23 +25,18 @@ import static com.amazonaws.client.builder.AwsClientBuilder.*;
 public class DynamoConnector {
 
 
-
     public static void main(String[] args) {
 
         Injector injector = Guice.createInjector(new ApplicationModule());
 
-        try {
-            TransactionService service = injector.getInstance(TransactionServiceImpl.class);
+        TransactionService service = injector.getInstance(TransactionServiceImpl.class);
 
-            Transaction tra = new Transaction(UUID.randomUUID(), "Eduardo", new BigDecimal(100), LocalDateTime.now());
-            service.create(tra);
-            Thread.sleep(5000);
-            System.out.println("Finished" );
-        } catch (Exception e) {
-            System.out.println(
-                    e.getLocalizedMessage());
-            e.printStackTrace();
-        }
+        Transaction tra = new Transaction(null, "Eduardo", new BigDecimal(100), LocalDateTime.now());
+
+        service.create(tra);
+
+        System.out.println("Finished");
+
     }
 
     public void connect() {
@@ -60,10 +55,10 @@ public class DynamoConnector {
 
         client.deleteTableAsync("name");
 
-        try{
+        try {
             Thread.sleep(1000);
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
 
         }
@@ -73,7 +68,7 @@ public class DynamoConnector {
         keySchemaElements.add(identifier);
 
         ArrayList<AttributeDefinition> attributes = new ArrayList<>();
-        attributes.add(new AttributeDefinition().withAttributeName("tbid").withAttributeType("S" ));
+        attributes.add(new AttributeDefinition().withAttributeName("tbid").withAttributeType("S"));
         ProvisionedThroughput tp = new ProvisionedThroughput(10L, 10L);
 
         CreateTableRequest createTableRequest = new CreateTableRequest(attributes, "name", keySchemaElements, tp);
@@ -81,10 +76,6 @@ public class DynamoConnector {
         client.createTable(createTableRequest);
 
     }
-
-
-
-
 
 
 }

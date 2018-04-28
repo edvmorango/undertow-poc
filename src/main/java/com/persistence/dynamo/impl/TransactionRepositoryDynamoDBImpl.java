@@ -36,7 +36,10 @@ public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<
     @Override
     public TransactionItem objectToPersistence(Transaction obj) {
 
-        String uid = obj.getUid().toString();
+        String uid = null;
+        if(obj.getUid() != null)
+            uid = obj.getUid().toString();
+
         Date createdAt = DateFormatter.localDateTimeToDate(obj.getCreatedAt());
 
         return new TransactionItem(uid, obj.getClientName(), obj.getValue(), createdAt);
@@ -46,15 +49,10 @@ public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<
     @Override
     public TransactionItem create(TransactionItem obj) {
 
-
         client.getMapper().save(obj);
-        try{
-            Thread.sleep(1000);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
 
         System.out.println(obj.getUid());
+
         return obj;
     }
 
