@@ -82,6 +82,10 @@ public final class TransactionHandlers {
 
     }
 
+    //    public static HttpHandler confirmTransaction() {
+//
+//
+//    }
     public static HttpHandler queryHandler() {
 
         return (HttpServerExchange exchange) -> {

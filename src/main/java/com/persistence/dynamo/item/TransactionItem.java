@@ -2,12 +2,12 @@ package com.persistence.dynamo.item;
 
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import com.model.CreditCard;
-import com.model.Transaction;
-import com.utils.DateFormatter;
+import com.model.enums.CreditCard;
+import com.model.enums.TransactionStatus;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 
 @DynamoDBTable(tableName = "transaction")
 public class TransactionItem {
@@ -17,7 +17,7 @@ public class TransactionItem {
     private String uid;
 
     @DynamoDBRangeKey(attributeName = "sid")
-    private Integer sid;
+    private Long sid;
 
     @DynamoDBAttribute(attributeName = "clientName")
     private String clientName;
@@ -29,19 +29,29 @@ public class TransactionItem {
     private Date createdAt;
 
     @DynamoDBTypeConvertedEnum
+    @DynamoDBAttribute(attributeName = "creditCard")
     private CreditCard creditCard;
+
+    @DynamoDBTypeConvertedEnum
+    @DynamoDBAttribute(attributeName = "transactionStatus")
+    private TransactionStatus transactionStatus;
+
+    @DynamoDBAttribute(attributeName = "historic")
+    private Set<String> historic;
 
     public TransactionItem() {
     }
 
 
-    public TransactionItem(String uid, Integer sid, String clientName, BigDecimal value, Date createdAt, CreditCard creditCard) {
+    public TransactionItem(String uid, Long sid, String clientName, BigDecimal value, Date createdAt, CreditCard creditCard, TransactionStatus transactionStatus, Set<String> historic) {
         this.uid = uid;
         this.sid = sid;
         this.clientName = clientName;
         this.value = value;
         this.createdAt = createdAt;
         this.creditCard = creditCard;
+        this.transactionStatus = transactionStatus;
+        this.historic = historic;
     }
 
     public String getUid() {
@@ -52,11 +62,11 @@ public class TransactionItem {
         this.uid = uid;
     }
 
-    public Integer getSid() {
+    public Long getSid() {
         return sid;
     }
 
-    public void setSid(Integer sid) {
+    public void setSid(Long sid) {
         this.sid = sid;
     }
 
@@ -91,4 +101,21 @@ public class TransactionItem {
     public void setCreditCard(CreditCard creditCard) {
         this.creditCard = creditCard;
     }
+
+    public TransactionStatus getTransactionStatus() {
+        return transactionStatus;
+    }
+
+    public void setTransactionStatus(TransactionStatus transactionStatus) {
+        this.transactionStatus = transactionStatus;
+    }
+
+    public Set<String> getHistoric() {
+        return historic;
+    }
+
+    public void setHistoric(Set<String> historic) {
+        this.historic = historic;
+    }
+
 }

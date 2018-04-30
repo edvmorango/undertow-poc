@@ -16,8 +16,7 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionRepositoryDynamoDBImpl rep;
 
     @Override
-    public Transaction create(Transaction obj) {
-
+    public Transaction create(Transaction obj) throws Exception {
         return rep.create(obj);
     }
 

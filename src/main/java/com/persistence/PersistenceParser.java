@@ -4,6 +4,6 @@ public interface PersistenceParser<E, T> {
 
     T persistenceToObject(E entity);
 
-    E objectToPersistence(T obj);
+    E objectToPersistence(T obj) throws Exception;
 
 }

@@ -1,7 +1,10 @@
 package com.model;
 
+import com.model.enums.CreditCard;
+import com.model.enums.TransactionStatus;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 public class Transaction {
@@ -11,6 +14,8 @@ public class Transaction {
     private BigDecimal value;
     private LocalDateTime createdAt;
     private CreditCard creditCard;
+    private TransactionStatus transactionStatus;
+    private Set<String> historic;
 
     public Transaction() {
     }
@@ -21,12 +26,14 @@ public class Transaction {
         this.value = value;
     }
 
-    public Transaction(UUID uid, String clientName, BigDecimal value, LocalDateTime createdAt, CreditCard creditCard) {
+    public Transaction(UUID uid, String clientName, BigDecimal value, LocalDateTime createdAt, CreditCard creditCard, TransactionStatus transactionStatus, Set<String> historic) {
         this.uid = uid;
         this.clientName = clientName;
         this.value = value;
         this.createdAt = createdAt;
         this.creditCard = creditCard;
+        this.transactionStatus = transactionStatus;
+        this.historic = historic;
     }
 
     public UUID getUid() {
@@ -67,5 +74,21 @@ public class Transaction {
 
     public void setCreditCard(CreditCard creditCard) {
         this.creditCard = creditCard;
+    }
+
+    public TransactionStatus getTransactionStatus() {
+        return transactionStatus;
+    }
+
+    public void setTransactionStatus(TransactionStatus transactionStatus) {
+        this.transactionStatus = transactionStatus;
+    }
+
+    public Set<String> getHistoric() {
+        return historic;
+    }
+
+    public void setHistoric(Set<String> historic) {
+        this.historic = historic;
     }
 }

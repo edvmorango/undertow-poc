@@ -3,10 +3,14 @@ package com.persistence.dynamo.impl;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
+import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
+import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.google.inject.Inject;
 import com.model.Transaction;
+import com.model.enums.TransactionStatus;
 import com.persistence.dynamo.DynamoDBClient;
 import com.persistence.repository.TransactionRepository;
 import com.persistence.dynamo.item.TransactionItem;
@@ -23,41 +27,45 @@ public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<
     private DynamoDBClient client;
 
     @Override
-    public Transaction persistenceToObject(TransactionItem entity) {
+    public Transaction persistenceToObject(TransactionItem e) {
 
-        UUID uuid = UUID.fromString(entity.getUid());
-        LocalDateTime createdAt = DateFormatter.dateToLocalDateTime(entity.getCreatedAt());
+        UUID uuid = UUID.fromString(e.getUid());
+        LocalDateTime createdAt = DateFormatter.dateToLocalDateTime(e.getCreatedAt());
 
-        return new Transaction(uuid, entity.getClientName(), entity.getValue(), createdAt, entity.getCreditCard());
+        return new Transaction(uuid, e.getClientName(), e.getValue(), createdAt, e.getCreditCard(), e.getTransactionStatus(), e.getHistoric());
 
     }
 
     @Override
-    public TransactionItem objectToPersistence(Transaction obj) {
+    public TransactionItem objectToPersistence(Transaction obj) throws Exception {
 
-        String uid;
-        if (obj.getUid() == null) {
-            uid = UUID.randomUUID().toString();
-        } else {
-            uid = obj.getUid().toString();
+        try {
+
+            Date createdAt = DateFormatter.localDateTimeToDate(obj.getCreatedAt());
+
+            return new TransactionItem(obj.getUid().toString(), createdAt.getTime(), obj.getClientName(), obj.getValue(), createdAt, obj.getCreditCard(), obj.getTransactionStatus(), obj.getHistoric());
+
+        } catch (Exception e) {
+
+            throw e;
+
         }
 
-        Date createdAt;
-
-        if (obj.getCreatedAt() == null) {
-            createdAt = new Date();
-        } else {
-            createdAt = DateFormatter.localDateTimeToDate(obj.getCreatedAt());
-        }
-
-        return new TransactionItem(uid, uid.hashCode(), obj.getClientName(), obj.getValue(), createdAt, obj.getCreditCard());
     }
 
     @Override
-    public Transaction create(Transaction obj) {
+    public Transaction create(Transaction obj) throws Exception {
+        obj.setUid(UUID.randomUUID());
+        obj.setCreatedAt(LocalDateTime.now());
+        obj.setTransactionStatus(TransactionStatus.PENDING);
+
+        TreeSet<String> historic = new TreeSet<>();
+
+        historic.add(LocalDateTime.now() + " - Creating transaction ");
+
+        obj.setHistoric(historic);
 
         TransactionItem entity = objectToPersistence(obj);
-
         client.getMapper().save(entity);
 
         return persistenceToObject(entity);
@@ -66,7 +74,18 @@ public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<
     @Override
     public Optional<Transaction> findById(String uid) {
 
-        Optional<Transaction> transaction = Optional.ofNullable(client.getMapper().load(TransactionItem.class, uid, uid.hashCode())).map(this::persistenceToObject);
+
+        HashMap<String, AttributeValue> params = new HashMap<>();
+        params.put(":uid", new AttributeValue().withS(uid));
+
+        DynamoDBQueryExpression<TransactionItem> exp = new DynamoDBQueryExpression<>();
+        exp.withKeyConditionExpression("uid = :uid");
+        exp.withExpressionAttributeValues(params);
+
+        PaginatedQueryList<TransactionItem> query = client.getMapper().query(TransactionItem.class, exp, client.getConfig());
+
+        Optional<Transaction> transaction = Optional.ofNullable(query.get(0)).map(this::persistenceToObject);
+
         return transaction;
     }
 
