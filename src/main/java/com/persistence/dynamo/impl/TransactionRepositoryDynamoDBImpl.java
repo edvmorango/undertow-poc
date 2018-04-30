@@ -17,7 +17,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<Transaction, TransactionItem> {
+public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<TransactionItem, Transaction> {
 
     @Inject
     private DynamoDBClient client;
@@ -54,27 +54,29 @@ public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<
     }
 
     @Override
-    public TransactionItem create(TransactionItem obj) {
+    public Transaction create(Transaction obj) {
 
-        client.getMapper().save(obj);
-        System.out.println(obj.getUid());
+        TransactionItem entity = objectToPersistence(obj);
 
-        return obj;
-    }
-    @Override
-    public Optional<TransactionItem> findById(String uid) {
+        client.getMapper().save(entity);
 
-        return Optional.ofNullable(client.getMapper().load(TransactionItem.class, uid, uid.hashCode()));
-
+        return persistenceToObject(entity);
     }
 
     @Override
-    public List<TransactionItem> list() {
+    public Optional<Transaction> findById(String uid) {
+
+        Optional<Transaction> transaction = Optional.ofNullable(client.getMapper().load(TransactionItem.class, uid, uid.hashCode())).map(this::persistenceToObject);
+        return transaction;
+    }
+
+    @Override
+    public List<Transaction> list() {
         DynamoDBScanExpression exp = new DynamoDBScanExpression();
 
         PaginatedScanList<TransactionItem> resultSet = client.getMapper().scan(TransactionItem.class, exp, client.getConfig());
 
-        return resultSet.stream().collect(Collectors.toList());
+        return resultSet.stream().map(this::persistenceToObject).collect(Collectors.toList());
 
     }
 }

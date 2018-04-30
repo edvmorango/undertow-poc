@@ -92,13 +92,10 @@ public final class TransactionHandlers {
 
             List<Transaction> transactions = service.list();
 
-
             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json");
             exchange.getResponseSender().send(ByteBuffer.wrap(om.writeValueAsBytes(transactions)));
 
 //            exchange.getResponseSender().send("Transaction for queries " + clientName.map(Deque::getFirst).orElse("No QP"));
-
-
 
         };
 

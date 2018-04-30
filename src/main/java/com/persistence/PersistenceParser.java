@@ -1,6 +1,6 @@
 package com.persistence;
 
-public interface PersistenceParser<T,E> {
+public interface PersistenceParser<E, T> {
 
     T persistenceToObject(E entity);
 

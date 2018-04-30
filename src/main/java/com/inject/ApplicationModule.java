@@ -5,8 +5,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
-import com.model.Transaction;
-import com.persistence.dynamo.DynamoConnector;
 import com.persistence.dynamo.DynamoDBClient;
 import com.persistence.dynamo.impl.TransactionRepositoryDynamoDBImpl;
 import com.persistence.repository.TransactionRepository;
