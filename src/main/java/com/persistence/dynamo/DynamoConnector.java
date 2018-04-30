@@ -30,16 +30,17 @@ public class DynamoConnector {
         Injector injector = Guice.createInjector(new ApplicationModule());
 
         TransactionService service = injector.getInstance(TransactionServiceImpl.class);
+//
+//        Transaction tra = new Transaction(null, "Eduardo Morango", new BigDecimal(100), LocalDateTime.now());
+//
+//        Transaction inserted = service.create(tra);
+//
+//        System.out.println("Inserted: "+inserted.getClientName());
+//        System.out.println("Found: "+service.findById(inserted.getUid().toString()));
 
-        Transaction tra = new Transaction(null, "Eduardo Morango", new BigDecimal(100), LocalDateTime.now());
-
-        Transaction inserted = service.create(tra);
-
-        System.out.println("Inserted: "+inserted.getClientName());
-        System.out.println("Found: "+service.findById(inserted.getUid().toString()));
-
-        for (Transaction t : service.list())
-            System.out.println("List: "+t.getCreatedAt());
+        for (Transaction t : service.list()) {
+            System.out.println("Client: " + t.getClientName() + " List: " + t.getCreatedAt());
+        }
 
 
         System.out.println("Finished");

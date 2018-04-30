@@ -42,7 +42,13 @@ public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<
             uid = obj.getUid().toString();
         }
 
-        Date createdAt = DateFormatter.localDateTimeToDate(obj.getCreatedAt());
+        Date createdAt;
+
+        if (obj.getCreatedAt() == null) {
+            createdAt = new Date();
+        } else {
+            createdAt = DateFormatter.localDateTimeToDate(obj.getCreatedAt());
+        }
 
         return new TransactionItem(uid, uid.hashCode(), obj.getClientName(), obj.getValue(), createdAt);
     }

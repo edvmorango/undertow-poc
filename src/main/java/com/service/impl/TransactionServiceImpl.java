@@ -17,7 +17,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Transaction create(Transaction obj) {
-       return Optional.of(rep.objectToPersistence(obj)).map(rep::create).map(rep::persistenceToObject).get();
+
+        return Optional.of(rep.objectToPersistence(obj)).map(rep::create).map(rep::persistenceToObject).get();
     }
 
     @Override

@@ -11,10 +11,21 @@ public class Transaction {
     private BigDecimal value;
     private LocalDateTime createdAt;
 
+
+    public Transaction() {
+    }
+
     public Transaction(UUID uid, String clientName, BigDecimal value) {
         this.uid = uid;
         this.clientName = clientName;
         this.value = value;
+    }
+
+    public Transaction(UUID uid, String clientName, BigDecimal value, LocalDateTime createdAt) {
+        this.uid = uid;
+        this.clientName = clientName;
+        this.value = value;
+        this.createdAt = createdAt;
     }
 
     public UUID getUid() {
@@ -46,13 +57,6 @@ public class Transaction {
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Transaction(UUID uid, String clientName, BigDecimal value, LocalDateTime createdAt) {
-        this.uid = uid;
-        this.clientName = clientName;
-        this.value = value;
         this.createdAt = createdAt;
     }
 }
