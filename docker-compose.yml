@@ -9,3 +9,9 @@ services:
       - ./db:/dynamodb_local_db
     ports:
       - 8000:8000
+  sqs-local:
+    container_name: sqs-local
+    image: vsouza/sqs-local
+    restart: always
+    ports:
+      - 9324:9324

@@ -13,6 +13,7 @@ import io.undertow.util.PathTemplateMatch;
 
 import java.nio.ByteBuffer;
 import java.util.Deque;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -20,14 +21,33 @@ public final class TransactionHandlers {
 
     private static TransactionService service = ApplicationModule.injector.getInstance(TransactionServiceImpl.class);
 
+    private static ObjectMapper om = new ObjectMapper();
+
+
     public static HttpHandler getHandler() {
 
         return (HttpServerExchange exchange) -> {
-            PathTemplateMatch pathMatch = exchange.getAttachment(PathTemplateMatch.ATTACHMENT_KEY);
 
-            Integer id = Integer.parseInt(pathMatch.getParameters().get("id"));
+            try {
 
-            exchange.getResponseSender().send("Transaction  get " + id);
+                PathTemplateMatch pathMatch = exchange.getAttachment(PathTemplateMatch.ATTACHMENT_KEY);
+
+                String uid = pathMatch.getParameters().get("id");
+
+                Optional<Transaction> transaction = service.findById(uid);
+
+                exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json");
+
+                if (transaction.isPresent()) {
+                    exchange.getResponseSender().send(ByteBuffer.wrap(om.writeValueAsBytes(transaction.get())));
+                } else {
+                    exchange.getResponseSender().send("{\"message\": \"Couldn't find Transaction.\"}");
+                }
+
+            } catch (Exception e) {
+                exchange.getResponseSender().send(e.getMessage());
+            }
+
 
         };
 
@@ -41,21 +61,23 @@ public final class TransactionHandlers {
                 return;
             }
 
-            // thread pool java
-            ByteBuffer buffer = ByteBuffer.allocate(2048);
+            try {
 
-            exchange.getRequestChannel().read(buffer);
+                ByteBuffer buffer = ByteBuffer.allocate(2048);
 
-            byte[] bts = buffer.array();
-            ObjectMapper om = new ObjectMapper();
+                exchange.getRequestChannel().read(buffer);
 
-            Transaction body = om.readValue(bts, Transaction.class);
+                byte[] bts = buffer.array();
 
-            Transaction transaction = service.create(body);
+                Transaction body = om.readValue(bts, Transaction.class);
 
-            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json");
-            exchange.getResponseSender().send(ByteBuffer.wrap(om.writeValueAsBytes(transaction)));
+                Transaction transaction = service.create(body);
 
+                exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json");
+                exchange.getResponseSender().send(ByteBuffer.wrap(om.writeValueAsBytes(transaction)));
+            } catch (Exception e) {
+                exchange.getResponseSender().send(e.getMessage());
+            }
         };
 
     }
@@ -68,7 +90,15 @@ public final class TransactionHandlers {
 
             Optional<Deque<String>> clientName = Optional.ofNullable(queryParameters.get("clientName"));
 
-            exchange.getResponseSender().send("Transaction for queries " + clientName.map(Deque::getFirst).orElse("No QP"));
+            List<Transaction> transactions = service.list();
+
+
+            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json");
+            exchange.getResponseSender().send(ByteBuffer.wrap(om.writeValueAsBytes(transactions)));
+
+//            exchange.getResponseSender().send("Transaction for queries " + clientName.map(Deque::getFirst).orElse("No QP"));
+
+
 
         };
 
