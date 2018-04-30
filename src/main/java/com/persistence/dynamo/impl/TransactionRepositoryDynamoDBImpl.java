@@ -28,7 +28,7 @@ public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<
         UUID uuid = UUID.fromString(entity.getUid());
         LocalDateTime createdAt = DateFormatter.dateToLocalDateTime(entity.getCreatedAt());
 
-        return new Transaction(uuid, entity.getClientName(), entity.getValue(), createdAt);
+        return new Transaction(uuid, entity.getClientName(), entity.getValue(), createdAt, entity.getCreditCard());
 
     }
 
@@ -50,7 +50,7 @@ public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<
             createdAt = DateFormatter.localDateTimeToDate(obj.getCreatedAt());
         }
 
-        return new TransactionItem(uid, uid.hashCode(), obj.getClientName(), obj.getValue(), createdAt);
+        return new TransactionItem(uid, uid.hashCode(), obj.getClientName(), obj.getValue(), createdAt, obj.getCreditCard());
     }
 
     @Override

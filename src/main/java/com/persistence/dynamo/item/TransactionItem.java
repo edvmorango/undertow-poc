@@ -2,6 +2,7 @@ package com.persistence.dynamo.item;
 
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.model.CreditCard;
 import com.model.Transaction;
 import com.utils.DateFormatter;
 
@@ -24,20 +25,23 @@ public class TransactionItem {
     @DynamoDBAttribute(attributeName = "value" )
     private BigDecimal value;
 
-
     @DynamoDBAttribute(attributeName = "createdAt")
     private Date createdAt;
+
+    @DynamoDBTypeConvertedEnum
+    private CreditCard creditCard;
 
     public TransactionItem() {
     }
 
 
-    public TransactionItem(String uid, Integer sid, String clientName, BigDecimal value, Date createdAt) {
+    public TransactionItem(String uid, Integer sid, String clientName, BigDecimal value, Date createdAt, CreditCard creditCard) {
         this.uid = uid;
         this.sid = sid;
         this.clientName = clientName;
         this.value = value;
         this.createdAt = createdAt;
+        this.creditCard = creditCard;
     }
 
     public String getUid() {
@@ -78,5 +82,13 @@ public class TransactionItem {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
     }
 }

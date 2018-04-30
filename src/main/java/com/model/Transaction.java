@@ -10,7 +10,7 @@ public class Transaction {
     private String clientName;
     private BigDecimal value;
     private LocalDateTime createdAt;
-
+    private CreditCard creditCard;
 
     public Transaction() {
     }
@@ -21,11 +21,12 @@ public class Transaction {
         this.value = value;
     }
 
-    public Transaction(UUID uid, String clientName, BigDecimal value, LocalDateTime createdAt) {
+    public Transaction(UUID uid, String clientName, BigDecimal value, LocalDateTime createdAt, CreditCard creditCard) {
         this.uid = uid;
         this.clientName = clientName;
         this.value = value;
         this.createdAt = createdAt;
+        this.creditCard = creditCard;
     }
 
     public UUID getUid() {
@@ -58,5 +59,13 @@ public class Transaction {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
     }
 }
