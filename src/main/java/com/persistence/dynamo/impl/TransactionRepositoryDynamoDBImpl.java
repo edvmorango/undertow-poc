@@ -13,10 +13,7 @@ import com.persistence.dynamo.item.TransactionItem;
 import com.utils.DateFormatter;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -59,9 +56,9 @@ public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<
         return obj;
     }
     @Override
-    public TransactionItem findById(String uid) {
+    public Optional<TransactionItem> findById(String uid) {
 
-        return client.getMapper().load(TransactionItem.class, uid, uid.hashCode());
+        return Optional.ofNullable(client.getMapper().load(TransactionItem.class, uid, uid.hashCode()));
 
     }
 

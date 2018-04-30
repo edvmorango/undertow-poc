@@ -17,20 +17,16 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Transaction create(Transaction obj) {
-
        return Optional.of(rep.objectToPersistence(obj)).map(rep::create).map(rep::persistenceToObject).get();
-
     }
 
     @Override
-    public Transaction findById(String uid) {
-        return Optional.of(rep.findById(uid)).map(rep::persistenceToObject).get();
+    public Optional<Transaction> findById(String uid) {
+        return rep.findById(uid).map(rep::persistenceToObject);
     }
 
     @Override
     public List<Transaction> list() {
-
         return rep.list().stream().map(rep::persistenceToObject).collect(Collectors.toList());
-
     }
 }
