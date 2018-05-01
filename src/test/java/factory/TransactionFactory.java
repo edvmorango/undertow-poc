@@ -9,6 +9,7 @@ import net.andreinc.mockneat.unit.objects.Constructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public class TransactionFactory {
@@ -27,6 +28,12 @@ public class TransactionFactory {
         transaction.setTransactionStatus(TransactionStatus.PENDING);
         transaction.setCreditCard(gen.from(CreditCard.class).val());
         return transaction;
+
+    }
+
+    public List<Transaction> getListOfTransactions(Integer n){
+
+       return gen.bools().map( (u) -> getNewTransaction()).list(n).val();
 
     }
 
