@@ -27,5 +27,6 @@ dependencies {
     testCompile group: 'com.mscharhag.oleaster', name: 'oleaster-matcher', version: '0.2.0'
     testCompile group: 'com.mscharhag.oleaster', name: 'oleaster-runner', version: '0.2.0'
     testCompile group: 'net.andreinc.mockneat', name: 'mockneat', version: '0.1.5'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.18.3'
 
 }

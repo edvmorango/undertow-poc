@@ -19,6 +19,18 @@ public class DynamoDBClient {
     private final DynamoDBMapper mapper;
     private final DynamoDBMapperConfig config;
 
+
+    public DynamoDBClient(AmazonDynamoDBAsync client) {
+
+        this.client = client;
+        this.mapper = new DynamoDBMapper(client);
+        this.config = DynamoDBMapperConfig.DEFAULT;
+
+        createTables();
+
+
+    }
+
     public DynamoDBClient() {
 
         BasicAWSCredentials credential = new BasicAWSCredentials("accessKey", "secretKey");

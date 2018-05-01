@@ -86,4 +86,15 @@ public class Transaction {
     public void setHistoric(Set<String> historic) {
         this.historic = historic;
     }
+
+    public Transaction(Transaction other) {
+        this.uid = other.uid;
+        this.clientName = other.clientName;
+        this.value = other.value;
+        this.createdAt = other.createdAt;
+        this.creditCard = other.creditCard;
+        this.transactionStatus = other.transactionStatus;
+        this.historic = other.historic;
+    }
+
 }

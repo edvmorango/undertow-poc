@@ -23,8 +23,12 @@ import java.util.stream.Collectors;
 
 public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<TransactionItem, Transaction> {
 
-    @Inject
     private DynamoDBClient client;
+
+    @Inject
+    public  TransactionRepositoryDynamoDBImpl( DynamoDBClient client){
+        this.client = client;
+    }
 
     @Override
     public Transaction persistenceToObject(TransactionItem e) {
@@ -55,17 +59,19 @@ public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<
 
     @Override
     public Transaction create(Transaction obj) throws Exception {
-        obj.setUid(UUID.randomUUID());
-        obj.setCreatedAt(LocalDateTime.now());
-        obj.setTransactionStatus(TransactionStatus.PENDING);
+        Transaction newObj = new Transaction(obj);
+
+        newObj.setUid(UUID.randomUUID());
+        newObj.setCreatedAt(LocalDateTime.now());
+        newObj.setTransactionStatus(TransactionStatus.PENDING);
 
         TreeSet<String> historic = new TreeSet<>();
 
         historic.add(LocalDateTime.now() + " - Creating transaction ");
 
-        obj.setHistoric(historic);
+        newObj.setHistoric(historic);
 
-        TransactionItem entity = objectToPersistence(obj);
+        TransactionItem entity = objectToPersistence(newObj);
         client.getMapper().save(entity);
 
         return persistenceToObject(entity);

@@ -12,8 +12,12 @@ import java.util.stream.Collectors;
 
 public class TransactionServiceImpl implements TransactionService {
 
-    @Inject
     private TransactionRepositoryDynamoDBImpl rep;
+
+    @Inject
+    public TransactionServiceImpl( TransactionRepositoryDynamoDBImpl rep) {
+        this.rep = rep;
+    }
 
     @Override
     public Transaction create(Transaction obj) throws Exception {
