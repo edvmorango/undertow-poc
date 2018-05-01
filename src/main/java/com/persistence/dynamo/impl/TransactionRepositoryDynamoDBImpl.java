@@ -43,7 +43,7 @@ public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<
 
             Date createdAt = DateFormatter.localDateTimeToDate(obj.getCreatedAt());
 
-            return new TransactionItem(obj.getUid().toString(), createdAt.getTime(), obj.getClientName(), obj.getValue(), createdAt, obj.getCreditCard(), obj.getTransactionStatus(), obj.getHistoric());
+            return new TransactionItem(obj.getUid().toString(), TransactionItem.RANGE_KEY , obj.getClientName(), obj.getValue(), createdAt, obj.getCreditCard(), obj.getTransactionStatus(), obj.getHistoric());
 
         } catch (Exception e) {
 
@@ -75,18 +75,9 @@ public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<
     public Optional<Transaction> findById(String uid) {
 
 
-        HashMap<String, AttributeValue> params = new HashMap<>();
-        params.put(":uid", new AttributeValue().withS(uid));
+        return Optional.ofNullable(client.getMapper().load(TransactionItem.class, uid, TransactionItem.RANGE_KEY))
+                .map(this::persistenceToObject);
 
-        DynamoDBQueryExpression<TransactionItem> exp = new DynamoDBQueryExpression<>();
-        exp.withKeyConditionExpression("uid = :uid");
-        exp.withExpressionAttributeValues(params);
-
-        PaginatedQueryList<TransactionItem> query = client.getMapper().query(TransactionItem.class, exp, client.getConfig());
-
-        Optional<Transaction> transaction = Optional.ofNullable(query.get(0)).map(this::persistenceToObject);
-
-        return transaction;
     }
 
     @Override
