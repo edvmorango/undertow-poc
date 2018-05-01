@@ -20,11 +20,6 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(UUID uid, String clientName, BigDecimal value) {
-        this.uid = uid;
-        this.clientName = clientName;
-        this.value = value;
-    }
 
     public Transaction(UUID uid, String clientName, BigDecimal value, LocalDateTime createdAt, CreditCard creditCard, TransactionStatus transactionStatus, Set<String> historic) {
         this.uid = uid;

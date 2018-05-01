@@ -7,6 +7,9 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    maven {
+        url "http://repo.spring.io/plugins-release/"
+    }
 }
 
 dependencies {
@@ -23,5 +26,6 @@ dependencies {
     testCompile group: 'com.mscharhag.oleaster', name: 'oleaster', version: '0.2.0', ext: 'pom'
     testCompile group: 'com.mscharhag.oleaster', name: 'oleaster-matcher', version: '0.2.0'
     testCompile group: 'com.mscharhag.oleaster', name: 'oleaster-runner', version: '0.2.0'
+    testCompile group: 'net.andreinc.mockneat', name: 'mockneat', version: '0.1.5'
 
 }
