@@ -26,7 +26,7 @@ public class TransactionRepositoryDynamoDBImpl implements TransactionRepository<
     private DynamoDBClient client;
 
     @Inject
-    public  TransactionRepositoryDynamoDBImpl( DynamoDBClient client){
+    public  TransactionRepositoryDynamoDBImpl(DynamoDBClient client){
         this.client = client;
     }
 

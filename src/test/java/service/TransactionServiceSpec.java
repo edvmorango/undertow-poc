@@ -41,7 +41,23 @@ public class TransactionServiceSpec {
     {
         describe("TransactionServiceSpec", () -> {
 
-            it("Should convert a Transaction into a new Item", () -> {
+            it("Should convert/undo Transaction to TransactionItem", () -> {
+
+                DynamoDBClient client = mock(DynamoDBClient.class);
+                TransactionRepositoryDynamoDBImpl rep = new TransactionRepositoryDynamoDBImpl(client);
+
+                Transaction tr = new TransactionFactory().getNewTransaction();
+
+                TransactionItem item = rep.objectToPersistence(tr);
+                Transaction undo = rep.persistenceToObject(item);
+
+                expect(item.getSid()).toBeNotNull();
+                expect(undo.getUid().equals(tr.getUid()));
+                expect(undo.getCreatedAt().compareTo(tr.getCreatedAt())).toEqual(0L);
+
+            });
+
+            it("Should create a new Transaction", () -> {
 
 
                 DynamoDBMapper mapper = mock(DynamoDBMapper.class);
@@ -49,7 +65,7 @@ public class TransactionServiceSpec {
 
                 TransactionRepositoryDynamoDBImpl rep = new TransactionRepositoryDynamoDBImpl(client);
                 TransactionService service = new TransactionServiceImpl(rep);
-                Transaction transaction = new TransactionFactory().getNewTransaction();
+                Transaction transaction = new TransactionFactory().getNewTransactionWithUUID(null);
 
                 when(client.getMapper()).thenReturn(mapper);
 
@@ -57,10 +73,13 @@ public class TransactionServiceSpec {
 
                 Transaction newTransaction = service.create(transaction);
 
-                expect(transaction.getUid().equals(newTransaction.getUid())).toBeFalse();
+                expect(newTransaction.getUid()).toBeNotNull();
                 expect(newTransaction.getTransactionStatus()).toEqual(TransactionStatus.PENDING);
 
             });
+
+
+
 
 
         });

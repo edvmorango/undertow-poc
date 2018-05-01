@@ -30,6 +30,14 @@ public class TransactionFactory {
 
     }
 
+    public Transaction getNewTransactionWithUUID(UUID uid){
+
+        Transaction newTransaction = getNewTransaction();
+        newTransaction.setUid(uid);
+        return newTransaction;
+
+    }
+
     public Transaction getNewTransactionWithTransactionStatus(TransactionStatus status){
 
         Transaction newTransaction = getNewTransaction();
