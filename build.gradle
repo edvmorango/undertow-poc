@@ -22,6 +22,7 @@ dependencies {
 
     compile group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version: '1.11.269'
     compile group: 'com.amazonaws', name: 'aws-java-sdk-sqs', version: '1.11.269'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: '1.11.269'
 
 
     compile group: 'com.google.inject', name: 'guice', version: '4.0'

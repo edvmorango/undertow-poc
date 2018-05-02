@@ -1,21 +1,19 @@
-package com.persistence.sqs;
+package com.messaging;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.Regions;
-import com.amazonaws.regions.ServiceAbbreviations;
 import com.amazonaws.services.sqs.AmazonSQS;
+import com.amazonaws.services.sqs.AmazonSQSAsync;
+import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
-import com.amazonaws.services.sqs.model.ListQueuesResult;
 import com.google.inject.Singleton;
-
-import java.util.List;
 
 @Singleton
 public class SQSClient {
 
-    private final AmazonSQS client;
+    private final AmazonSQSAsync client;
 
 
     public SQSClient() {
@@ -29,7 +27,7 @@ public class SQSClient {
                 Regions.US_EAST_1.toString());
 
 
-        client = AmazonSQSClientBuilder.standard().withCredentials(credentialsProvider).withEndpointConfiguration(endpointConf).build();
+        client = AmazonSQSAsyncClientBuilder.standard().withCredentials(credentialsProvider).withEndpointConfiguration(endpointConf).build();
 
     }
 

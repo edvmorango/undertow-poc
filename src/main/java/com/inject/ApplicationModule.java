@@ -5,10 +5,11 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
+import com.messaging.SNSClient;
 import com.persistence.dynamo.DynamoDBClient;
 import com.persistence.dynamo.impl.TransactionRepositoryDynamoDBImpl;
 import com.persistence.repository.TransactionRepository;
-import com.persistence.sqs.SQSClient;
+import com.messaging.SQSClient;
 import com.service.TransactionService;
 import com.service.impl.TransactionServiceImpl;
 
@@ -28,6 +29,7 @@ public class ApplicationModule extends AbstractModule {
 
         bind(DynamoDBClient.class).asEagerSingleton();
         bind(SQSClient.class).asEagerSingleton();
+        bind(SNSClient.class).asEagerSingleton();
 
         bind(TransactionRepository.class).annotatedWith(Names.named("TransactionRepositoryDynamo")).to(TransactionRepositoryDynamoDBImpl.class);
         bind(TransactionService.class).to(TransactionServiceImpl.class);

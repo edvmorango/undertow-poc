@@ -1,14 +1,12 @@
-package com.persistence.sqs;
+package com.messaging;
 
 
-import com.amazonaws.services.sqs.model.Message;
 import com.amazonaws.services.sqs.model.ReceiveMessageResult;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.model.Transaction;
 
-import java.util.Queue;
 
 public class TransactionQueue {
 
@@ -18,19 +16,24 @@ public class TransactionQueue {
 
 
     private static ObjectMapper om = new ObjectMapper();
-    private SQSClient client;
+    private SQSClient sqs;
+    private SNSClient sns;
     private String pendingUrl;
 
     @Inject
-    public TransactionQueue(SQSClient client) {
+    public TransactionQueue(SQSClient sqs, SNSClient sns) {
 
-        this.client = client;
+        this.sqs = sqs;
+        this.sns = sns;
 
-        client.getClient().createQueue(PENDING_TRANSACTIONS);
-        client.getClient().createQueue(FAILED_TRANSACTIONS);
-        client.getClient().createQueue(CONCLUDED_TRANSACTIONS);
+        sqs.getClient().createQueue(PENDING_TRANSACTIONS);
+        sqs.getClient().createQueue(FAILED_TRANSACTIONS);
+        sqs.getClient().createQueue(CONCLUDED_TRANSACTIONS);
 
-        pendingUrl = client.getClient().getQueueUrl(PENDING_TRANSACTIONS).getQueueUrl();
+        sns.getClient().createTopicAsync(PENDING_TRANSACTIONS);
+
+        pendingUrl = sqs.getClient().getQueueUrl(PENDING_TRANSACTIONS).getQueueUrl();
+
 
     }
 
@@ -42,7 +45,7 @@ public class TransactionQueue {
                 .withQueueUrl(pendingUrl)
                 .withMessageBody(body);
 
-        client.getClient().sendMessage(msg);
+        sqs.getClient().sendMessage(msg);
 
         System.out.println("Supposedly queuing message");
 
@@ -50,10 +53,9 @@ public class TransactionQueue {
 
     public void getPendingTransactions() throws Exception {
 
-        ReceiveMessageResult res = client.getClient().receiveMessage(pendingUrl);
+        ReceiveMessageResult res = sqs.getClient().receiveMessage(pendingUrl);
 
         res.getMessages().stream().forEach(System.out::println);
-
 
     }
 
