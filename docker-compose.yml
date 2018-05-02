@@ -6,7 +6,7 @@ services:
     image: cnadiminti/dynamodb-local
     restart: always
     volumes:
-      - ./db:/dynamodb_local_db
+      - ./docker/db:/dynamodb_local_db
     ports:
       - 8000:8000
   sqs-local:
@@ -15,3 +15,11 @@ services:
     restart: always
     ports:
       - 9324:9324
+  sns-local:
+    container_name: sns
+    image: s12v/sns
+    environment:
+      - DB_PATH=/docker/snsdb/db.json
+    restart: always
+    ports:
+      - 9911:9911

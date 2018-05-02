@@ -27,8 +27,9 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction transaction = rep.create(obj);
 
+        // if fails into enqueue step should throws a exception who cancels it
         queue.enqueuePendingTransaction(transaction);
-        queue.getPendingTransactions();
+
         return transaction;
     }
 

@@ -27,6 +27,9 @@ out/*
 
 db/*
 
+docker/dynamodb/*
+docker/snsdb/*
+
 # CMake
 cmake-build-debug/
 cmake-build-release/
