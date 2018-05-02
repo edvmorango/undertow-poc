@@ -3,7 +3,7 @@ package com.service.impl;
 import com.google.inject.Inject;
 import com.model.Transaction;
 import com.persistence.dynamo.impl.TransactionRepositoryDynamoDBImpl;
-import com.messaging.TransactionQueue;
+import com.messaging.TransactionTopic;
 import com.service.TransactionService;
 
 import java.util.List;
@@ -12,11 +12,11 @@ import java.util.Optional;
 public class TransactionServiceImpl implements TransactionService {
 
     private TransactionRepositoryDynamoDBImpl rep;
-    private TransactionQueue queue;
+    private TransactionTopic topics;
     @Inject
-    public TransactionServiceImpl(TransactionRepositoryDynamoDBImpl rep, TransactionQueue queue) {
+    public TransactionServiceImpl(TransactionRepositoryDynamoDBImpl rep, TransactionTopic topics) {
         this.rep = rep;
-        this.queue = queue;
+        this.topics = topics;
     }
 
     @Override
@@ -24,9 +24,8 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction transaction = rep.create(obj);
 
-        // if fails into enqueue step should throws a exception who cancels it
-        queue.enqueuePendingTransaction(transaction);
-
+        topics.publishPendingTransaction(transaction);
+        
         return transaction;
     }
 

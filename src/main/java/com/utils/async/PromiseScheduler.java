@@ -1,0 +1,20 @@
+package com.utils.async;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+public class PromiseScheduler {
+
+    private static final ScheduledExecutorService SERVICE = Executors.newSingleThreadScheduledExecutor();
+
+    public static void schedule(Runnable r) {
+        SERVICE.schedule(r, 1, TimeUnit.MILLISECONDS);
+    }
+
+    public static void schedule(Runnable r, Long delay) {
+        SERVICE.schedule(r, delay, TimeUnit.MILLISECONDS);
+    }
+
+
+}

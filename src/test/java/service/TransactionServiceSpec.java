@@ -45,7 +45,7 @@ public class TransactionServiceSpec {
                 DynamoDBClient client = mock(DynamoDBClient.class);
 
                 TransactionRepositoryDynamoDBImpl rep = new TransactionRepositoryDynamoDBImpl(client);
-//                TransactionQueue queue;
+//                TransactionTopic queue;
 //
 //                TransactionService service = new TransactionServiceImpl(rep);
 //                Transaction transaction = new TransactionFactory().getNewTransactionWithUUID(null);
