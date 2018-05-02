@@ -6,7 +6,7 @@ services:
     image: cnadiminti/dynamodb-local
     restart: always
     volumes:
-      - ./docker/db:/dynamodb_local_db
+      - ./docker/db/dynamodb:/dynamodb_local_db
     ports:
       - 8000:8000
   sqs-local:
